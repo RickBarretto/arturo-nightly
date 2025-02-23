@@ -143,7 +143,7 @@ jobs:
 
             - name: 'Tar files'
               if: matrix.os != 'windows-latest'
-              run: tar -cvf ${{ steps.artifact-details-win.outputs.ARTIFACT_NAME }}.tar ${{ steps.artifact-details-win.outputs.BINARY_PATH }}
+              run: tar -cvf ${{ steps.artifact-details.outputs.ARTIFACT_NAME }}.tar ${{ steps.artifact-details.outputs.BINARY_PATH }}
             
             - name: 'Tar files (Windows)'
               if: matrix.os == 'windows-latest'
