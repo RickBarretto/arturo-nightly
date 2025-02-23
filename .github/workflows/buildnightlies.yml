@@ -141,19 +141,27 @@ jobs:
                 echo "BINARY_PATH=$binary_path" >> "$GITHUB_OUTPUT"
                 echo "ARTIFACT_NAME=$artifact_name" >> "$GITHUB_OUTPUT"
 
+            - name: 'Tar files'
+              if: matrix.os != 'windows-latest'
+              run: tar -cvf ${{ steps.artifact-details-win.outputs.ARTIFACT_NAME }}.tar ${{ steps.artifact-details-win.outputs.BINARY_PATH }}
+            
+            - name: 'Tar files (Windows)'
+              if: matrix.os == 'windows-latest'
+              run: tar -cvf ${{ steps.artifact-details-win.outputs.ARTIFACT_NAME }}.tar ${{ steps.artifact-details-win.outputs.BINARY_PATH }}
+
             - name: Upload artifact
               uses: 'actions/upload-artifact@v4'
               if: matrix.os != 'windows-latest'
               with:
                 name: ${{ steps.artifact-details.outputs.ARTIFACT_NAME }}
-                path: ${{ steps.artifact-details.outputs.BINARY_PATH }}
+                path: ${{ steps.artifact-details-win.outputs.ARTIFACT_NAME }}.tar
             
             - name: Upload artifact (Windows)
               uses: 'actions/upload-artifact@v4'
               if: matrix.os == 'windows-latest'
               with:
                 name: ${{ steps.artifact-details-win.outputs.ARTIFACT_NAME }}
-                path: ${{ steps.artifact-details-win.outputs.BINARY_PATH }}
+                path: ${{ steps.artifact-details-win.outputs.ARTIFACT_NAME }}.tar
     
     release:
         name: "Release"
