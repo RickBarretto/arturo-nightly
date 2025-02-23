@@ -18,6 +18,11 @@ on:
         - cron: '46 20 * * *'
 
     workflow_dispatch:
+      inputs:
+        trigger:
+          description: 'Trigger a nightly build'
+          required: false
+          default: 'true'
 
 concurrency: 
     group: ${{ github.workflow }}-${{ github.ref }}
